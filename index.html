@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fen Kraft: Egyptian Adventure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gold: #D4AF37;
+            --dark-gold: #B8860B;
+            --light-beige: #F5F1E8;
+            --medium-beige: #E8DFCE;
+            --dark-beige: #D6C7AD;
+            --brown: #8B5A2B;
+            --dark-brown: #5A3921;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            color: var(--dark-brown);
+            background: var(--light-beige);
+        }
+
+        /* Layer 1: Gradient بيج */
+        .background-layer-1 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--light-beige) 0%, var(--medium-beige) 50%, var(--dark-beige) 100%);
+            z-index: -4;
+        }
+
+        /* Layer 2: Slideshow للصور */
+        .background-layer-2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 2.5s ease-in-out;
+            transform: scale(1.05);
+            animation: panZoom 25s infinite linear;
+        }
+
+        .slide.active {
+            opacity: 0.2;
+        }
+
+        /* Layer 3: Light Glow / أشعة شمس خفيفة */
+        .background-layer-3 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 30% 70%, rgba(245, 225, 180, 0.3) 0%, transparent 60%);
+            animation: sunGlow 20s infinite alternate ease-in-out;
+        }
+
+        /* Layer 4: Floating particles / رموز فرعونية */
+        .background-layer-4 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 85px;
+            opacity: 0.07;
+            animation: float 30s infinite linear;
+            color: var(--dark-brown);
+            text-shadow: 0 0 15px rgba(90, 57, 33, 0.2);
+            filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.1));
+            z-index: 1;
+        }
+
+        /* محتوى الصفحة */
+        .content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 5.5rem;
+            color: var(--brown);
+            text-shadow: 3px 3px 0px var(--primary-gold), 
+                         6px 6px 0px rgba(90, 57, 33, 0.3);
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            letter-spacing: 4px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .logo-subtitle {
+            font-size: 1.8rem;
+            color: var(--brown);
+            letter-spacing: 10px;
+            font-weight: 300;
+            margin-top: 1rem;
+        }
+
+        .hieroglyph-border {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 3rem 0;
+        }
+
+        .hieroglyph-border span {
+            font-size: 2.5rem;
+            margin: 0 1.5rem;
+            color: var(--brown);
+            opacity: 0.7;
+        }
+
+        .hieroglyph-border .line {
+            height: 3px;
+            width: 200px;
+            background: linear-gradient(90deg, transparent, var(--brown), transparent);
+        }
+
+        .main-title {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            color: var(--dark-brown);
+            text-shadow: 2px 2px 0px var(--primary-gold);
+            font-family: 'Times New Roman', serif;
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        .main-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--brown), transparent);
+        }
+
+        .cta-button {
+            background: linear-gradient(to bottom, var(--brown), var(--dark-brown));
+            color: var(--light-beige);
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(139, 90, 43, 0.4);
+            font-weight: bold;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            margin-top: 2rem;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .cta-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-gold), var(--dark-gold));
+            z-index: -1;
+            transition: opacity 0.4s ease;
+            opacity: 0;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(139, 90, 43, 0.6);
+        }
+
+        .cta-button:hover:before {
+            opacity: 1;
+        }
+
+        .cta-button:active {
+            transform: translateY(2px);
+        }
+
+        .egyptian-elements {
+            display: flex;
+            justify-content: center;
+            margin-top: 4rem;
+            gap: 3rem;
+        }
+
+        .element {
+            font-size: 4rem;
+            color: var(--brown);
+            opacity: 0.8;
+            animation: floatElement 8s infinite ease-in-out;
+        }
+
+        .element:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .element:nth-child(3) {
+            animation-delay: 2s;
+        }
+
+        /* Animations */
+        @keyframes panZoom {
+            0% {
+                transform: scale(1.05) translateX(0) translateY(0);
+            }
+            25% {
+                transform: scale(1.08) translateX(-1%) translateY(1%);
+            }
+            50% {
+                transform: scale(1.05) translateX(0) translateY(2%);
+            }
+            75% {
+                transform: scale(1.08) translateX(1%) translateY(1%);
+            }
+            100% {
+                transform: scale(1.05) translateX(0) translateY(0);
+            }
+        }
+
+        @keyframes sunGlow {
+            0% {
+                background: radial-gradient(circle at 30% 70%, rgba(245, 225, 180, 0.3) 0%, transparent 60%);
+            }
+            100% {
+                background: radial-gradient(circle at 70% 30%, rgba(245, 225, 180, 0.4) 0%, transparent 60%);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.07;
+            }
+            90% {
+                opacity: 0.07;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes floatElement {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3.5rem;
+            }
+            
+            .logo-subtitle {
+                font-size: 1.3rem;
+                letter-spacing: 5px;
+            }
+            
+            .main-title {
+                font-size: 3rem;
+            }
+            
+            .cta-button {
+                padding: 1.2rem 2.5rem;
+                font-size: 1.3rem;
+            }
+            
+            .particle {
+                font-size: 60px;
+            }
+            
+            .hieroglyph-border span {
+                font-size: 2rem;
+                margin: 0 1rem;
+            }
+            
+            .hieroglyph-border .line {
+                width: 100px;
+            }
+            
+            .egyptian-elements {
+                gap: 2rem;
+            }
+            
+            .element {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Layer 1: Gradient بيج -->
+    <div class="background-layer-1"></div>
+    
+    <!-- Layer 2: Slideshow للصور -->
+    <div class="background-layer-2">
+        <div class="slideshow-container">
+            <div class="slide" id="slide1"></div>
+            <div class="slide" id="slide2"></div>
+            <div class="slide" id="slide3"></div>
+        </div>
+    </div>
+    
+    <!-- Layer 3: Light Glow / أشعة شمس خفيفة -->
+    <div class="background-layer-3"></div>
+    
+    <!-- Layer 4: Floating particles / رموز فرعونية -->
+    <div class="background-layer-4" id="particles-container"></div>
+    
+    <!-- محتوى الصفحة -->
+    <div class="content">
+        <div class="logo-container">
+            <div class="logo">FEN KRAFT</div>
+            <div class="logo-subtitle">EGYPTIAN ADVENTURE</div>
+        </div>
+        
+        <div class="hieroglyph-border">
+            <div class="line"></div>
+            <span>𓂀</span>
+            <span>𓆣</span>
+            <span>𓋹</span>
+            <span>𓎟</span>
+            <span>𓍶</span>
+            <div class="line"></div>
+        </div>
+        
+        <h1 class="main-title">رحلة إلى مصر الفرعونية</h1>
+        
+        <button class="cta-button" onclick="goToMap()">
+            ابدأ المغامرة
+        </button>
+        
+        <div class="egyptian-elements">
+            <div class="element">𓂀</div>
+            <div class="element">𓆣</div>
+            <div class="element">𓋹</div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الصور المعدلة - أهرامات فقط (بدون معابد)
+        const images = [
+            'https://i.pinimg.com/736x/31/ff/62/31ff62e70c65d3965e88ec5fc3e23e5b.jpg',
+            'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+            'https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+        ];
+
+        // رموز فرعونية للجسيمات العائمة
+        const symbols = ['𓂀', '𓃒', '𓆣', '𓂧', '𓋹', '𓎟', '𓍶', '𓁰', '𓂋', '𓅊', '𓃭', '𓂻'];
+
+        // تهيئة المتغيرات
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const particlesContainer = document.getElementById('particles-container');
+
+        // تعيين خلفيات للشرائح
+        slides.forEach((slide, index) => {
+            slide.style.backgroundImage = `url('${images[index]}')`;
+        });
+
+        // الانتقال لصفحة الخريطة
+        function goToMap() {
+            window.location.href = 'map.html';
+        }
+
+        // بدء عرض الشرائح
+        function startSlideshow() {
+            slides[currentSlide].classList.add('active');
+            
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 6000); // تغيير الصورة كل 6 ثواني
+        }
+
+        // إنشاء الجسيمات العائمة
+        function createParticles() {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                // مواضع عشوائية
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.fontSize = `${Math.random() * 50 + 70}px`; // رموز أكبر
+                particle.style.animationDuration = `${Math.random() * 25 + 25}s`;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // تأثير Parallax مع تحريك الماوس (لأجهزة الكمبيوتر)
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth > 768) { // للأجهزة الكبيرة فقط
+                const x = (e.clientX / window.innerWidth) * 15 - 7.5;
+                const y = (e.clientY / window.innerHeight) * 15 - 7.5;
+                
+                document.querySelector('.background-layer-2').style.transform = `translate(${x}px, ${y}px)`;
+                document.querySelector('.background-layer-3').style.transform = `translate(${x * 0.5}px, ${y * 0.5}px)`;
+                document.querySelector('.background-layer-4').style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            }
+        });
+
+        // تأثير النبض للزر
+        const ctaButton = document.querySelector('.cta-button');
+        setInterval(() => {
+            ctaButton.style.animation = 'pulse 2s ease-in-out';
+            setTimeout(() => {
+                ctaButton.style.animation = '';
+            }, 2000);
+        }, 8000);
+
+        // بدء التطبيق
+        window.addEventListener('load', () => {
+            startSlideshow();
+            createParticles();
+        });
+    </script>
+</body>
+</html>
