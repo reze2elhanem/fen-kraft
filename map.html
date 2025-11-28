@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fen Kraft: Egyptian Adventure - الخريطة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gold: #D4AF37;
+            --dark-gold: #B8860B;
+            --light-beige: #F5F1E8;
+            --medium-beige: #E8DFCE;
+            --dark-beige: #D6C7AD;
+            --brown: #8B5a2B;
+            --dark-brown: #5A3921;
+            --accent-blue: #1A5276;
+            --accent-turquoise: #40E0D0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            color: var(--dark-brown);
+            background: linear-gradient(135deg, var(--light-beige) 0%, var(--medium-beige) 50%, var(--dark-beige) 100%);
+            height: 100vh;
+        }
+
+        /* زر العودة */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--dark-gold) 100%);
+            border: none;
+            color: var(--dark-brown);
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+            font-weight: bold;
+            z-index: 100;
+            font-family: 'Times New Roman', serif;
+            border: 2px solid var(--light-beige);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        /* الخريطة الأساسية */
+        .map-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--light-beige);
+            z-index: -2;
+            transition: all 2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .map-image {
+            width: 80%;
+            height: 80%;
+            background-image: url('https://islamicwallartstore.com/cdn/shop/files/egypt-map-wall-decor-wooden-multi-layered-design-for-home-1.jpg?v=1756208452&width=720');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: grayscale(100%) brightness(70%) sepia(30%);
+            transition: all 2s ease;
+        }
+
+        .map-on .map-image {
+            filter: grayscale(0%) brightness(100%) sepia(0%);
+        }
+
+        /* طبقة التدرج اللوني */
+        .color-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(212, 175, 55, 0.1) 0%, 
+                rgba(139, 90, 43, 0.15) 30%, 
+                rgba(214, 199, 173, 0.1) 70%, 
+                rgba(90, 57, 33, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        .map-on .color-overlay {
+            opacity: 1;
+        }
+
+        /* زر البداية */
+        .start-button {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--dark-gold) 100%);
+            border: none;
+            color: var(--dark-brown);
+            padding: 20px 40px;
+            font-size: 1.8rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            font-weight: bold;
+            letter-spacing: 1px;
+            z-index: 100;
+            font-family: 'Times New Roman', serif;
+            border: 3px solid var(--light-beige);
+        }
+
+        .start-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6);
+        }
+
+        .start-button.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* أزرار المحافظات */
+        .provinces-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        .province-btn {
+            position: absolute;
+            border: none;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--medium-beige) 0%, var(--dark-beige) 100%);
+            color: var(--dark-brown);
+            font-family: 'Times New Roman', serif;
+            overflow: hidden;
+            z-index: 20;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(90, 57, 33, 0.2);
+            border: 3px solid var(--brown);
+            padding: 20px;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .province-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .province-btn.on {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .province-btn:hover::before {
+            opacity: 1;
+        }
+
+        /* الإسكندرية */
+        .alexandria-btn {
+            top: 35%;
+            left: 40%;
+            width: 170px;
+            height: 170px;
+            background: linear-gradient(135deg, var(--medium-beige) 0%, #a8c0d6 100%);
+        }
+
+        .alexandria-btn .province-icon {
+            color: #2a5a8f;
+            filter: drop-shadow(0 0 10px rgba(42, 90, 143, 0.3));
+        }
+
+        /* الأقصر */
+        .luxor-btn {
+            top: 50%;
+            left: 50%;
+            width: 170px;
+            height: 170px;
+            background: linear-gradient(135deg, var(--medium-beige) 0%, #d4a76a 100%);
+            transform: translate(-50%, -50%);
+        }
+
+        .luxor-btn .province-icon {
+            color: var(--brown);
+            filter: drop-shadow(0 0 10px rgba(139, 90, 43, 0.3));
+        }
+
+        /* القاهرة */
+        .cairo-btn {
+            top: 35%;
+            left: 60%;
+            width: 170px;
+            height: 170px;
+            background: linear-gradient(135deg, var(--medium-beige) 0%, #c4a47a 100%);
+        }
+
+        .cairo-btn .province-icon {
+            color: var(--dark-brown);
+            filter: drop-shadow(0 0 10px rgba(90, 57, 33, 0.3));
+        }
+
+        /* النصوص داخل الأزرار */
+        .province-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            z-index: 2;
+            letter-spacing: 1px;
+        }
+
+        .province-icon {
+            font-size: 3.5rem;
+            z-index: 2;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .province-desc {
+            font-size: 1rem;
+            opacity: 0.9;
+            text-align: center;
+            line-height: 1.4;
+            z-index: 2;
+            font-weight: 500;
+        }
+
+        /* تأثيرات الـ Hover */
+        .province-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            z-index: 30;
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.4);
+            border: 3px solid var(--primary-gold);
+        }
+
+        .alexandria-btn:hover {
+            background: linear-gradient(135deg, #a8c0d6 0%, #7aa6d6 100%);
+        }
+
+        .luxor-btn:hover {
+            background: linear-gradient(135deg, #d4a76a 0%, #c49552 100%);
+        }
+
+        .cairo-btn:hover {
+            background: linear-gradient(135deg, #c4a47a 0%, #b08c5a 100%);
+        }
+
+        .province-btn:hover .province-icon {
+            transform: scale(1.2);
+        }
+
+        /* العنوان */
+        .page-title {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 3rem;
+            color: var(--dark-brown);
+            text-shadow: 2px 2px 4px var(--primary-gold);
+            font-family: 'Times New Roman', serif;
+            z-index: 50;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .page-subtitle {
+            position: fixed;
+            top: 100px;
+            right: 40px;
+            font-size: 1.3rem;
+            color: var(--brown);
+            font-family: 'Times New Roman', serif;
+            z-index: 50;
+            opacity: 0.9;
+            letter-spacing: 2px;
+        }
+
+        /* الجسيمات العائمة */
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            animation: floatParticle 20s infinite linear;
+            color: var(--primary-gold);
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+        }
+
+        /* الأنيميشن */
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* تأثيرات الانتقال */
+        .transition-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 10%, rgba(212, 175, 55, 0.4) 100%);
+            opacity: 0;
+            z-index: 100;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        /* التجاوب مع الشاشات */
+        @media (max-width: 768px) {
+            .province-btn {
+                width: 140px;
+                height: 140px;
+                padding: 15px;
+            }
+            
+            .province-name {
+                font-size: 1.2rem;
+            }
+            
+            .province-icon {
+                font-size: 2.5rem;
+            }
+            
+            .start-button {
+                font-size: 1.4rem;
+                padding: 15px 30px;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+                top: 20px;
+                right: 20px;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+                top: 70px;
+                right: 20px;
+            }
+            
+            .back-button {
+                top: 20px;
+                left: 20px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- زر العودة -->
+    <button class="back-button" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        العودة
+    </button>
+
+    <!-- العنوان -->
+    <div class="page-title">خريطة المغامرة المصرية</div>
+    <div class="page-subtitle">FEN KRAFT: EGYPTIAN ADVENTURE</div>
+
+    <!-- زر البداية -->
+    <button class="start-button" id="startButton">
+        <i class="fas fa-play" style="margin-left: 10px;"></i>
+        ابدأ رحلتك عبر محافظات مصر
+    </button>
+
+    <!-- الخريطة -->
+    <div class="map-container" id="mapContainer">
+        <div class="map-image"></div>
+        <div class="color-overlay"></div>
+    </div>
+
+    <!-- أزرار المحافظات -->
+    <div class="provinces-container">
+        <button class="province-btn alexandria-btn" id="alexandriaBtn">
+            <span class="province-icon">⛵</span>
+            <span class="province-name">الإسكندرية</span>
+            <span class="province-desc">عروس البحر المتوسط</span>
+        </button>
+        
+        <button class="province-btn luxor-btn" id="luxorBtn">
+            <span class="province-icon">𓂀</span>
+            <span class="province-name">الأقصر</span>
+            <span class="province-desc">مدينة الشمس</span>
+        </button>
+        
+        <button class="province-btn cairo-btn" id="cairoBtn">
+            <span class="province-icon">𓍶</span>
+            <span class="province-name">القاهرة</span>
+            <span class="province-desc">مدينة الألف مئذنة</span>
+        </button>
+    </div>
+
+    <!-- تأثيرات الانتقال -->
+    <div class="transition-effect" id="transitionEffect"></div>
+
+    <!-- الجسيمات العائمة -->
+    <div class="floating-particles" id="floatingParticles"></div>
+
+    <script>
+        // العناصر الرئيسية
+        const startButton = document.getElementById('startButton');
+        const mapContainer = document.getElementById('mapContainer');
+        const alexandriaBtn = document.getElementById('alexandriaBtn');
+        const luxorBtn = document.getElementById('luxorBtn');
+        const cairoBtn = document.getElementById('cairoBtn');
+        const transitionEffect = document.getElementById('transitionEffect');
+        const floatingParticles = document.getElementById('floatingParticles');
+
+        // حالة الخريطة
+        let isMapOn = false;
+
+        // العودة للصفحة الرئيسية
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // تهيئة الجسيمات العائمة
+        function createParticles() {
+            const symbols = ['𓂀', '𓆣', '𓋹', '𓎟', '𓍶', '𓁰', '𓂋', '𓅊'];
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.fontSize = `${Math.random() * 20 + 15}px`;
+                particle.style.animationDuration = `${Math.random() * 20 + 15}s`;
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                
+                floatingParticles.appendChild(particle);
+            }
+        }
+
+        // تفعيل الخريطة
+        function activateMap() {
+            isMapOn = true;
+            
+            // إخفاء زر البداية
+            startButton.classList.add('hidden');
+            
+            // تشغيل الخريطة
+            setTimeout(() => {
+                mapContainer.classList.add('map-on');
+                
+                // تشغيل الأزرار مع تأثير متتالي
+                setTimeout(() => {
+                    alexandriaBtn.classList.add('on');
+                    alexandriaBtn.style.animation = 'fadeInUp 0.8s ease forwards';
+                }, 300);
+                
+                setTimeout(() => {
+                    luxorBtn.classList.add('on');
+                    luxorBtn.style.animation = 'fadeInUp 0.8s ease forwards';
+                }, 500);
+                
+                setTimeout(() => {
+                    cairoBtn.classList.add('on');
+                    cairoBtn.style.animation = 'fadeInUp 0.8s ease forwards';
+                }, 700);
+                
+                // تأثير الانتقال
+                transitionEffect.style.opacity = '1';
+                setTimeout(() => {
+                    transitionEffect.style.opacity = '0';
+                }, 1500);
+                
+            }, 500);
+        }
+
+        // تحديد محافظة
+        function selectProvince(province) {
+            if (!isMapOn) return;
+            
+            // تأثير الانتقال
+            transitionEffect.style.opacity = '0.5';
+            setTimeout(() => {
+                transitionEffect.style.opacity = '0';
+            }, 800);
+            
+            // الانتقال للصفحة التالية
+            setTimeout(() => {
+                switch(province) {
+                    case 'alexandria':
+                        window.location.href = 'alexandria.html';
+                        break;
+                    case 'luxor':
+                        window.location.href = 'luxor.html';
+                        break;
+                    case 'cairo':
+                        window.location.href = 'cairo.html';
+                        break;
+                }
+            }, 1000);
+        }
+
+        // تأثير Parallax مع الماوس
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth > 768 && isMapOn) {
+                const x = (e.clientX / window.innerWidth) * 10 - 5;
+                const y = (e.clientY / window.innerHeight) * 10 - 5;
+                
+                mapContainer.style.transform = `translate(${x}px, ${y}px)`;
+            }
+        });
+
+        // تهيئة الأحداث
+        startButton.addEventListener('click', activateMap);
+        alexandriaBtn.addEventListener('click', () => selectProvince('alexandria'));
+        luxorBtn.addEventListener('click', () => selectProvince('luxor'));
+        cairoBtn.addEventListener('click', () => selectProvince('cairo'));
+
+        // بدء التطبيق
+        window.addEventListener('load', () => {
+            createParticles();
+        });
+    </script>
+</body>
+</html>
