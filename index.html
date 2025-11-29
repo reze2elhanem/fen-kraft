@@ -426,50 +426,6 @@
                 max-width: 280px;
             }
         }
-
-        /* لعبة الذاكرة */
-        .memory-game-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--light-beige);
-            z-index: 1000;
-            overflow-y: auto;
-            display: none;
-        }
-
-        .game-header {
-            background: linear-gradient(135deg, var(--brown), var(--dark-brown));
-            color: var(--light-beige);
-            padding: 1rem;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 1001;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .back-button {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--primary-gold);
-            border: none;
-            color: var(--dark-brown);
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .game-content {
-            padding: 1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
     </style>
 </head>
 <body>
@@ -491,8 +447,8 @@
     <!-- Layer 4: Floating particles / رموز فرعونية -->
     <div class="background-layer-4" id="particles-container"></div>
     
-    <!-- محتوى الصفحة الرئيسية -->
-    <div class="content" id="main-content">
+    <!-- محتوى الصفحة -->
+    <div class="content">
         <div class="logo-container">
             <div class="logo">FEN KRAFT</div>
             <div class="logo-subtitle">EGYPTIAN ADVENTURE</div>
@@ -514,7 +470,7 @@
             <button class="cta-button" onclick="goToMap()">
                 ابدأ المغامرة
             </button>
-            <button class="cta-button" onclick="startMemoryGame()">
+            <button class="cta-button" onclick="goToGame()">
                 لعبة الذاكرة الفرعونية
             </button>
         </div>
@@ -523,18 +479,6 @@
             <div class="element">𓂀</div>
             <div class="element">𓆣</div>
             <div class="element">𓋹</div>
-        </div>
-    </div>
-
-    <!-- لعبة الذاكرة -->
-    <div class="memory-game-container" id="memory-game">
-        <div class="game-header">
-            <button class="back-button" onclick="closeMemoryGame()">العودة</button>
-            <h2>لعبة الذاكرة الفرعونية</h2>
-        </div>
-        <div class="game-content">
-            <!-- سيتم إضافة محتوى اللعبة هنا -->
-            <div id="game-container"></div>
         </div>
     </div>
 
@@ -553,9 +497,6 @@
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const particlesContainer = document.getElementById('particles-container');
-        const mainContent = document.getElementById('main-content');
-        const memoryGame = document.getElementById('memory-game');
-        const gameContainer = document.getElementById('game-container');
 
         // تعيين خلفيات للشرائح
         slides.forEach((slide, index) => {
@@ -567,199 +508,9 @@
             window.location.href = 'map.html';
         }
 
-        // بدء لعبة الذاكرة
-        function startMemoryGame() {
-            mainContent.style.display = 'none';
-            memoryGame.style.display = 'block';
-            loadMemoryGame();
-        }
-
-        // إغلاق لعبة الذاكرة
-        function closeMemoryGame() {
-            memoryGame.style.display = 'none';
-            mainContent.style.display = 'flex';
-        }
-
-        // تحميل لعبة الذاكرة
-        function loadMemoryGame() {
-            gameContainer.innerHTML = `
-                <style>
-                    .memory-game {
-                        max-width: 100%;
-                        margin: 0 auto;
-                        text-align: center;
-                    }
-
-                    .game-info {
-                        display: flex;
-                        justify-content: space-between;
-                        margin-bottom: 20px;
-                        background-color: #a1887f;
-                        padding: 15px;
-                        border-radius: 10px;
-                        color: #fff;
-                        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-                    }
-
-                    .info-box {
-                        background-color: #6d4c41;
-                        padding: 10px 15px;
-                        border-radius: 8px;
-                        min-width: 120px;
-                    }
-
-                    .score {
-                        color: #ffd54f;
-                        font-weight: bold;
-                        font-size: 1.3rem;
-                    }
-
-                    .timer {
-                        color: #ffd54f;
-                        font-weight: bold;
-                        font-size: 1.3rem;
-                    }
-
-                    .game-board {
-                        display: grid;
-                        grid-template-columns: repeat(4, 1fr);
-                        gap: 10px;
-                        margin-bottom: 20px;
-                    }
-
-                    .card {
-                        height: 80px;
-                        perspective: 1000px;
-                        cursor: pointer;
-                    }
-
-                    .card-inner {
-                        position: relative;
-                        width: 100%;
-                        height: 100%;
-                        text-align: center;
-                        transition: transform 0.6s;
-                        transform-style: preserve-3d;
-                    }
-
-                    .card.flipped .card-inner {
-                        transform: rotateY(180deg);
-                    }
-
-                    .card-front, .card-back {
-                        position: absolute;
-                        width: 100%;
-                        height: 100%;
-                        backface-visibility: hidden;
-                        border-radius: 8px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                    }
-
-                    .card-front {
-                        background: linear-gradient(135deg, #d7ccc8 0%, #bcaaa4 100%);
-                        border: 2px solid #8d6e63;
-                        color: #5d4037;
-                        font-size: 1.5rem;
-                    }
-
-                    .card-back {
-                        background: linear-gradient(135deg, #ffd54f 0%, #f9a825 100%);
-                        border: 2px solid #5d4037;
-                        transform: rotateY(180deg);
-                        font-size: 2rem;
-                    }
-
-                    .card.matched .card-back {
-                        background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
-                        animation: pulse 0.5s;
-                    }
-
-                    .controls {
-                        display: flex;
-                        justify-content: center;
-                        gap: 15px;
-                        margin-bottom: 20px;
-                    }
-
-                    .game-button {
-                        padding: 10px 20px;
-                        font-size: 1rem;
-                        background: linear-gradient(to bottom, #8d6e63, #6d4c41);
-                        color: #ffd54f;
-                        border: none;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        transition: all 0.3s;
-                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-                    }
-
-                    .message {
-                        font-size: 1.2rem;
-                        margin-top: 20px;
-                        padding: 15px;
-                        border-radius: 10px;
-                        background-color: #5d4037;
-                        color: #ffd54f;
-                        display: none;
-                    }
-
-                    .message.show {
-                        display: block;
-                    }
-
-                    @media (max-width: 480px) {
-                        .game-board {
-                            grid-template-columns: repeat(3, 1fr);
-                        }
-                        
-                        .card {
-                            height: 70px;
-                        }
-                        
-                        .info-box {
-                            min-width: 100px;
-                            padding: 8px 12px;
-                        }
-                    }
-
-                    @media (max-width: 360px) {
-                        .game-board {
-                            grid-template-columns: repeat(2, 1fr);
-                        }
-                        
-                        .card {
-                            height: 60px;
-                        }
-                    }
-                </style>
-                <div class="memory-game">
-                    <div class="game-info">
-                        <div class="info-box">
-                            <div>النقاط</div>
-                            <div class="score" id="score">0</div>
-                        </div>
-                        <div class="info-box">
-                            <div>الوقت</div>
-                            <div class="timer" id="timer">60</div>
-                        </div>
-                    </div>
-                    
-                    <div class="game-board" id="gameBoard"></div>
-                    
-                    <div class="controls">
-                        <button class="game-button" id="startBtn">ابدأ اللعبة</button>
-                        <button class="game-button" id="resetBtn" disabled>إعادة</button>
-                    </div>
-                    
-                    <div class="message" id="message"></div>
-                </div>
-            `;
-
-            // تهيئة اللعبة
-            initMemoryGame();
+        // الانتقال لصفحة اللعبة
+        function goToGame() {
+            window.location.href = 'game.html';
         }
 
         // بدء عرض الشرائح
@@ -770,7 +521,7 @@
                 slides[currentSlide].classList.remove('active');
                 currentSlide = (currentSlide + 1) % slides.length;
                 slides[currentSlide].classList.add('active');
-            }, 6000);
+            }, 6000); // تغيير الصورة كل 6 ثواني
         }
 
         // إنشاء الجسيمات العائمة
@@ -780,8 +531,9 @@
                 particle.classList.add('particle');
                 particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
                 
+                // مواضع عشوائية
                 particle.style.left = `${Math.random() * 100}%`;
-                particle.style.fontSize = `${Math.random() * 50 + 70}px`;
+                particle.style.fontSize = `${Math.random() * 50 + 70}px`; // رموز أكبر
                 particle.style.animationDuration = `${Math.random() * 25 + 25}s`;
                 particle.style.animationDelay = `${Math.random() * 20}s`;
                 
@@ -791,7 +543,7 @@
 
         // تأثير Parallax مع تحريك الماوس (لأجهزة الكمبيوتر)
         document.addEventListener('mousemove', (e) => {
-            if (window.innerWidth > 768) {
+            if (window.innerWidth > 768) { // للأجهزة الكبيرة فقط
                 const x = (e.clientX / window.innerWidth) * 15 - 7.5;
                 const y = (e.clientY / window.innerHeight) * 15 - 7.5;
                 
@@ -817,13 +569,6 @@
             startSlideshow();
             createParticles();
         });
-
-        // كود لعبة الذاكرة
-        function initMemoryGame() {
-            // سيتم تنفيذ كود اللعبة هنا
-            // هذا مجرد هيكل أساسي
-            console.log("لعبة الذاكرة جاهزة للتحميل");
-        }
     </script>
 </body>
 </html>
