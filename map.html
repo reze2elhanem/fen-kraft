@@ -41,55 +41,6 @@
             touch-action: manipulation;
         }
 
-        /* شاشة التحميل */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--light-beige);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: opacity 1s ease;
-        }
-
-        .loading-logo {
-            font-size: 4rem;
-            color: var(--primary-gold);
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        .loading-text {
-            font-size: 1.5rem;
-            color: var(--dark-brown);
-            margin-bottom: 30px;
-        }
-
-        .progress-bar {
-            width: 200px;
-            height: 10px;
-            background: var(--medium-beige);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-gold), var(--dark-gold));
-            transition: width 0.3s ease;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
         /* زر العودة */
         .back-button {
             position: fixed;
@@ -139,29 +90,16 @@
             height: 70%;
             max-width: 800px;
             max-height: 600px;
-            background: linear-gradient(135deg, var(--medium-beige) 0%, var(--dark-beige) 100%);
-            border: 3px solid var(--dark-brown);
-            border-radius: 15px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(90, 57, 33, 0.3);
+            background-image: url('https://islamicwallartstore.com/cdn/shop/files/egypt-map-wall-decor-wooden-multi-layered-design-for-home-1.jpg?v=1756208452&width=720');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: grayscale(100%) brightness(70%) sepia(30%);
             transition: all 2s ease;
         }
 
-        .map-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M10,10 L90,10 L90,90 L10,90 Z" fill="none" stroke="%235A3921" stroke-width="2" stroke-dasharray="8,4"/><circle cx="30" cy="30" r="5" fill="%23D4AF37"/><circle cx="70" cy="50" r="5" fill="%23D4AF37"/><circle cx="50" cy="70" r="5" fill="%23D4AF37"/></svg>');
-            opacity: 0.3;
-        }
-
         .map-on .map-image {
-            border-color: var(--primary-gold);
-            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.4);
+            filter: grayscale(0%) brightness(100%) sepia(0%);
         }
 
         /* طبقة التدرج اللوني */
@@ -308,6 +246,10 @@
             transition: all 0.3s ease;
         }
 
+        .alexandria-btn .province-icon {
+            color: #2a5a8f;
+        }
+
         .province-name {
             font-size: 1.2rem;
             font-weight: bold;
@@ -370,60 +312,6 @@
             opacity: 0.9;
             letter-spacing: 1px;
             text-align: right;
-        }
-
-        /* نظام النقاط */
-        .points-system {
-            position: fixed;
-            top: max(20px, env(safe-area-inset-top));
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--dark-gold) 100%);
-            padding: 10px 20px;
-            border-radius: 25px;
-            color: var(--dark-brown);
-            font-weight: bold;
-            z-index: 1000;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-            border: 2px solid var(--light-beige);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Times New Roman', serif;
-        }
-
-        .points-icon {
-            font-size: 1.2rem;
-        }
-
-        /* نظام الصوت */
-        .sound-toggle {
-            position: fixed;
-            top: max(20px, env(safe-area-inset-top));
-            right: max(80px, calc(env(safe-area-inset-right) + 60px));
-            background: var(--light-beige);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            font-size: 1.3rem;
-            color: var(--dark-brown);
-            transition: all 0.3s ease;
-            border: 2px solid var(--dark-gold);
-        }
-
-        .sound-toggle:hover {
-            transform: scale(1.1);
-            background: var(--primary-gold);
-        }
-
-        .sound-toggle:active {
-            transform: scale(1.05);
         }
 
         /* الجسيمات العائمة */
@@ -489,6 +377,53 @@
             transition: opacity 1s ease;
         }
 
+        /* نظام النقاط */
+        .points-display {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top));
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--dark-gold) 100%);
+            color: var(--dark-brown);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+            border: 2px solid var(--light-beige);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* نظام الصوت */
+        .sound-toggle {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom));
+            right: max(20px, env(safe-area-inset-right));
+            background: var(--light-beige);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            font-size: 1.5rem;
+            color: var(--dark-brown);
+            transition: all 0.3s ease;
+            border: 2px solid var(--dark-gold);
+        }
+
+        .sound-toggle:hover {
+            transform: scale(1.1);
+            background: var(--primary-gold);
+        }
+
         /* تحسينات للشاشات الصغيرة */
         @media (max-width: 768px) {
             .province-btn {
@@ -527,8 +462,8 @@
                 height: 60%;
             }
 
-            .points-system {
-                font-size: 0.9rem;
+            .points-display {
+                font-size: 1rem;
                 padding: 8px 16px;
             }
         }
@@ -564,14 +499,6 @@
             .province-desc {
                 font-size: 0.7rem;
             }
-
-            .page-title {
-                font-size: 1.5rem;
-            }
-
-            .page-subtitle {
-                font-size: 0.8rem;
-            }
         }
 
         /* منع التكبير على iOS */
@@ -583,28 +510,19 @@
     </style>
 </head>
 <body>
-    <!-- شاشة التحميل -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-logo">𓂀</div>
-        <div class="loading-text">FEN KRAFT</div>
-        <div class="progress-bar">
-            <div class="progress" id="progressBar"></div>
-        </div>
-    </div>
-
     <!-- زر العودة -->
     <button class="back-button" id="backButton">
         <i class="fas fa-arrow-left"></i>
         العودة
     </button>
 
-    <!-- نظام النقاط -->
-    <div class="points-system" id="pointsSystem">
-        <span class="points-icon">🏆</span>
-        <span id="pointsDisplay">0 نقطة</span>
+    <!-- عرض النقاط -->
+    <div class="points-display" id="pointsDisplay">
+        <i class="fas fa-coins"></i>
+        <span id="pointsValue">0</span> نقطة
     </div>
 
-    <!-- نظام الصوت -->
+    <!-- زر التحكم بالصوت -->
     <div class="sound-toggle" id="soundToggle">
         <i class="fas fa-volume-mute"></i>
     </div>
@@ -652,15 +570,13 @@
     <!-- الجسيمات العائمة -->
     <div class="floating-particles" id="floatingParticles"></div>
 
-    <!-- عنصر الصوت -->
+    <!-- مشغل الموسيقى الخفي -->
     <audio id="backgroundMusic" loop>
-        <source src="https://assets.mixkit.co/music/preview/mixkit-ancient-egypt-30.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
     <script>
         // العناصر الرئيسية
-        const loadingScreen = document.getElementById('loadingScreen');
-        const progressBar = document.getElementById('progressBar');
         const backButton = document.getElementById('backButton');
         const startButton = document.getElementById('startButton');
         const mapContainer = document.getElementById('mapContainer');
@@ -669,78 +585,24 @@
         const cairoBtn = document.getElementById('cairoBtn');
         const transitionEffect = document.getElementById('transitionEffect');
         const floatingParticles = document.getElementById('floatingParticles');
-        const pointsSystem = document.getElementById('pointsSystem');
         const pointsDisplay = document.getElementById('pointsDisplay');
+        const pointsValue = document.getElementById('pointsValue');
         const soundToggle = document.getElementById('soundToggle');
         const backgroundMusic = document.getElementById('backgroundMusic');
 
         // حالة الخريطة
         let isMapOn = false;
-        let userPoints = 0;
-        let isSoundOn = false;
-
-        // محاكاة التحميل
-        function simulateLoading() {
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 15;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    
-                    // إخفاء شاشة التحميل بعد اكتمال التحميل
-                    setTimeout(() => {
-                        loadingScreen.style.opacity = '0';
-                        setTimeout(() => {
-                            loadingScreen.style.display = 'none';
-                        }, 1000);
-                    }, 500);
-                }
-                progressBar.style.width = `${progress}%`;
-            }, 200);
-        }
-
-        // تحميل النقاط من localStorage
-        function loadPoints() {
-            const savedPoints = localStorage.getItem('fenKraftPoints');
-            if (savedPoints) {
-                userPoints = parseInt(savedPoints);
-                updatePointsDisplay();
-            }
-        }
-
-        // حفظ النقاط في localStorage
-        function savePoints() {
-            localStorage.setItem('fenKraftPoints', userPoints.toString());
-        }
+        let userPoints = localStorage.getItem('egyptAdventurePoints') || 0;
+        let isSoundOn = localStorage.getItem('egyptAdventureSound') === 'true';
 
         // تحديث عرض النقاط
         function updatePointsDisplay() {
-            pointsDisplay.textContent = `${userPoints} نقطة`;
-        }
-
-        // إضافة النقاط
-        function addPoints(points) {
-            userPoints += points;
-            updatePointsDisplay();
-            savePoints();
-            
-            // تأثير إضافة النقاط
-            pointsSystem.style.animation = 'pulse 0.5s ease';
-            setTimeout(() => {
-                pointsSystem.style.animation = '';
-            }, 500);
+            pointsValue.textContent = userPoints;
         }
 
         // العودة للصفحة الرئيسية
         function goBack() {
-            // تأثير الانتقال
-            transitionEffect.style.opacity = '1';
-            setTimeout(() => {
-                // هنا يمكن إضافة الانتقال للصفحة الرئيسية إذا كانت هناك صفحة
-                // window.location.href = 'main.html';
-                console.log('العودة للصفحة الرئيسية');
-            }, 1000);
+            window.location.href = 'index.html';
         }
 
         // تهيئة الجسيمات العائمة
@@ -815,6 +677,9 @@
                 transitionEffect.style.opacity = '0';
             }, 800);
             
+            // حفظ النقاط قبل الانتقال
+            localStorage.setItem('egyptAdventurePoints', userPoints);
+            
             // الانتقال للصفحة التالية
             setTimeout(() => {
                 switch(province) {
@@ -841,19 +706,17 @@
             isSoundOn = !isSoundOn;
             const icon = soundToggle.querySelector('i');
             
-            try {
-                if (isSoundOn) {
-                    backgroundMusic.play();
-                    icon.classList.remove('fa-volume-mute');
-                    icon.classList.add('fa-volume-up');
-                } else {
-                    backgroundMusic.pause();
-                    icon.classList.remove('fa-volume-up');
-                    icon.classList.add('fa-volume-mute');
-                }
-            } catch (error) {
-                console.log('خطأ في تشغيل الصوت:', error);
+            if (isSoundOn) {
+                icon.classList.remove('fa-volume-mute');
+                icon.classList.add('fa-volume-up');
+                backgroundMusic.play().catch(e => console.log('لم يتم تشغيل الموسيقى:', e));
+            } else {
+                icon.classList.remove('fa-volume-up');
+                icon.classList.add('fa-volume-mute');
+                backgroundMusic.pause();
             }
+            
+            localStorage.setItem('egyptAdventureSound', isSoundOn);
         }
 
         // إصلاح ارتفاع الشاشة على الموبايل
@@ -908,20 +771,8 @@
                 });
             });
 
-            // نظام الصوت
+            // التحكم بالصوت
             soundToggle.addEventListener('click', toggleSound);
-            soundToggle.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                toggleSound();
-            });
-
-            // تشغيل الصوت تلقائياً عند التفاعل الأول
-            document.addEventListener('click', function initSound() {
-                if (!isSoundOn) {
-                    toggleSound();
-                }
-                document.removeEventListener('click', initSound);
-            });
 
             console.log('تم تهيئة جميع الأحداث');
         }
@@ -930,12 +781,6 @@
         function initApp() {
             console.log('بدء التطبيق...');
             
-            // محاكاة التحميل
-            simulateLoading();
-            
-            // تحميل النقاط
-            loadPoints();
-            
             // إصلاح ارتفاع الشاشة
             setAppHeight();
             window.addEventListener('resize', setAppHeight);
@@ -943,6 +788,17 @@
             
             // تهيئة الجسيمات
             createParticles();
+            
+            // تحديث النقاط
+            updatePointsDisplay();
+            
+            // تهيئة الصوت
+            if (isSoundOn) {
+                const icon = soundToggle.querySelector('i');
+                icon.classList.remove('fa-volume-mute');
+                icon.classList.add('fa-volume-up');
+                backgroundMusic.play().catch(e => console.log('لم يتم تشغيل الموسيقى:', e));
+            }
             
             // تهيئة الأحداث
             initEvents();
