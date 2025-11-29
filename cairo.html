@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fen Kraft: Cairo Adventure - القاهرة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* إضافة نفس الستايل السابق مع تعديلات بسيطة */
+        /* ... CSS السابق ... */
+    </style>
+</head>
+<body>
+    <!-- زر العودة للخريطة -->
+    <button class="back-button" onclick="goBackToMap()">
+        <i class="fas fa-arrow-left"></i>
+        العودة للخريطة
+    </button>
+
+    <!-- باقي محتوى صفحة القاهرة -->
+    <!-- ... HTML السابق ... -->
+
+    <script>
+        function goBackToMap() {
+            window.location.href = 'index.html';
+        }
+
+        // تعديل دالة إضافة النقاط لتشمل حفظها
+        function addPoints(points) {
+            userPoints += points;
+            updatePointsDisplay();
+            savePoints();
+        }
+
+        function savePoints() {
+            localStorage.setItem('fenKraftPoints', userPoints.toString());
+        }
+
+        function loadPoints() {
+            const savedPoints = localStorage.getItem('fenKraftPoints');
+            if (savedPoints) {
+                userPoints = parseInt(savedPoints);
+                updatePointsDisplay();
+            }
+        }
+    </script>
+</body>
+</html>
