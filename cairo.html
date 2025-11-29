@@ -6,43 +6,115 @@
     <title>Fen Kraft: Cairo Adventure - القاهرة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* إضافة نفس الستايل السابق مع تعديلات بسيطة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gold: #D4AF37;
+            --dark-gold: #B8860B;
+            --light-beige: #F5F1E8;
+            --medium-beige: #E8DFCE;
+            --dark-beige: #D6C7AD;
+            --brown: #8B5A2B;
+            --dark-brown: #5A3921;
+            --black: #2C2C2C;
+            --papyrus-light: #F8F3E5;
+            --papyrus-dark: #E3D9C6;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, var(--light-beige) 0%, var(--medium-beige) 50%, var(--dark-beige) 100%);
+            color: var(--dark-brown);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* زر العودة */
+        .back-button {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top));
+            left: max(20px, env(safe-area-inset-left));
+            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--dark-gold) 100%);
+            border: none;
+            color: var(--dark-brown);
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+            font-weight: bold;
+            z-index: 1000;
+            font-family: 'Times New Roman', serif;
+            border: 2px solid var(--light-beige);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            min-height: 44px;
+        }
+
+        .back-button:active {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        /* نظام النقاط */
+        .points-system {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top));
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--dark-gold) 100%);
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: var(--dark-brown);
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+            border: 2px solid var(--light-beige);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .points-icon {
+            font-size: 1.2rem;
+        }
+
+        /* نظام الصوت */
+        .sound-toggle {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top));
+            right: max(20px, env(safe-area-inset-right));
+            background: var(--light-beige);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            font-size: 1.3rem;
+            color: var(--dark-brown);
+            transition: all 0.3s ease;
+            border: 2px solid var(--dark-gold);
+        }
+
+        .sound-toggle:hover {
+            transform: scale(1.1);
+            background: var(--primary-gold);
+        }
+
+        /* باقي الستايل كما هو في الكود الأصلي */
         /* ... CSS السابق ... */
-    </style>
-</head>
-<body>
-    <!-- زر العودة للخريطة -->
-    <button class="back-button" onclick="goBackToMap()">
-        <i class="fas fa-arrow-left"></i>
-        العودة للخريطة
-    </button>
 
-    <!-- باقي محتوى صفحة القاهرة -->
-    <!-- ... HTML السابق ... -->
-
-    <script>
-        function goBackToMap() {
-            window.location.href = 'index.html';
-        }
-
-        // تعديل دالة إضافة النقاط لتشمل حفظها
-        function addPoints(points) {
-            userPoints += points;
-            updatePointsDisplay();
-            savePoints();
-        }
-
-        function savePoints() {
-            localStorage.setItem('fenKraftPoints', userPoints.toString());
-        }
-
-        function loadPoints() {
-            const savedPoints = localStorage.getItem('fenKraftPoints');
-            if (savedPoints) {
-                userPoints = parseInt(savedPoints);
-                updatePointsDisplay();
-            }
-        }
-    </script>
-</body>
-</html>
+    </
